@@ -21,7 +21,7 @@ export const ViewInputButton = styled.View`
 
 export const StyledInput = styled.TextInput`
     background-color: #ffffff;
-    padding: 5px;
+    padding: 8px;
     border-radius: 10px;
     margin-top: 7px;
     width: 90%;
@@ -50,7 +50,7 @@ export const StyledScrollView = styled.ScrollView`
     margin: 0;
     background-color: transparent;
     margin-top: 160px;
-    width: 90%;
+    width: 95%;
     margin-bottom: 5px;
 `;
 
@@ -59,18 +59,21 @@ export const ViewTasksAdd = styled.View`
     flex: 1;
     justify-content: center;
     align-items: flex-start;
-    background-color: #C9FFE9;
+    background-color: ${({color}) => color ?? "#005070"};
     padding: 10px;
     margin-left: 20px;
     border-radius: 10px;
-    margin-top: 5px;
+    margin-top: 9px;
     margin-bottom: 5px;
+    border: 1px solid #56CFFD;
 `;
 
 export const TextTask = styled.Text`
-    color: ${({color}) => color ?? "#000000"};
+    color: ${({color}) => color ?? "#ffffff"};
     font-size: 20px;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
+    margin-left: 5px;
+    margin-right: 5px;
 `;
 
 
@@ -85,9 +88,9 @@ export const ViewTaskBtns = styled.View`
 `;
 
 export const TextDate = styled.Text`
-    color: ${({color}) => color ?? "#000000"};
+    color: ${({color}) => color ?? "#C4EFFF"};
     font-size: 14px;
-    margin-left: 8px;
+    margin-left: 30px;
     margin-top: 20px;
     font-weight: bold;
 `;
@@ -95,7 +98,7 @@ export const TextDate = styled.Text`
 export const ButtonsTaskDone = styled.TouchableOpacity`
     background-color: ${({color}) => color ?? "#7DFF54"};
     border-radius: 50px;
-    border: 2px solid #000000;
+    border: 2px solid #56CFFD;
     width: 25px;
     height: 25px;
     bottom: 38%;
@@ -106,7 +109,7 @@ export const ButtonsTaskDone = styled.TouchableOpacity`
 export const ButtonsTaskDelete = styled.TouchableOpacity`
     background-color: ${({color}) => color ?? "#FF5454"};
     border-radius: 50px;
-    border: 2px solid #000000;
+    border: 2px solid #56CFFD;
     width: 25px;
     height: 25px;
     bottom: 78%;

@@ -1,15 +1,18 @@
 import { useNavigation } from "@react-navigation/core";
 import React, {useState, useEffect} from "react";
-import { Alert } from "react-native";
+import { Modal, Alert } from "react-native";
 import { auth } from "../../firebase";
 import {ViewContainer, BtnContainerPhoto, StyledPhoto, 
-  StyledTextGeneral, StyledButton, StyledBtnText} from './Profile.styles'; 
+  StyledTextGeneral, StyledButton, StyledBtnText,
+  ModalViewAll, ModalView, ModalTextTitle, ModalButton, ModalTextBtn } from './Profile.styles'; 
 import * as ImagePicker from 'expo-image-picker';
 
 const Profile = (props) => {
   const navigation = useNavigation();
   const photo = props.photo;
   const setPhoto = props.setPhoto; 
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -35,6 +38,7 @@ const Profile = (props) => {
     if (!result.cancelled) {
       setPhoto(result.uri);
     }
+    setModalVisible(!modalVisible); 
   };
 
   const handleSignOut = () => {
@@ -50,10 +54,33 @@ const Profile = (props) => {
   
   return (
     <ViewContainer>
-      <BtnContainerPhoto onPress={pickImage}>
+      <BtnContainerPhoto onPress={()=>setModalVisible(true)}>
         <StyledPhoto source={{uri: photo}}/>
       </BtnContainerPhoto>
       <StyledTextGeneral>Email: {auth.currentUser?.email}</StyledTextGeneral>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }} >
+          <ModalViewAll>
+            <ModalView>
+              <ModalTextTitle>Choose an option:</ModalTextTitle>
+              <ModalButton onPress={pickImage}>
+                <ModalTextBtn>Choose gallery photo</ModalTextBtn>
+              </ModalButton>
+              <ModalButton onPress={() => setModalVisible(!modalVisible)}>
+                <ModalTextBtn>Take a picture</ModalTextBtn>
+              </ModalButton>
+              <ModalButton onPress={() => setModalVisible(!modalVisible)}>
+                <ModalTextBtn>Cancel</ModalTextBtn>
+              </ModalButton>
+            </ModalView>
+          </ModalViewAll>
+      </Modal>
       <StyledButton onPress={handleSignOut}>
         <StyledBtnText>Sign Out</StyledBtnText>
       </StyledButton>
