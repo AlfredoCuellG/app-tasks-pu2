@@ -8,11 +8,9 @@ import logo from '../../media/images/logo.png';
 import RegisterUser from '../RegisterPage/Register.page'; 
 
 const Login = () => {
-  const [name, setName] = useState(""); 
-  const [lastname, setLastname] = useState(""); 
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
-  const [tasks, setTasks] = useState([]); 
+  const [registerVisible, setRegisterVisible] = useState(false); 
 
   const navigation = useNavigation();
 
@@ -25,17 +23,6 @@ const Login = () => {
     return unsuscribe;
   }, []);
   
-  const handleSignup = () => {
-    auth
-      .createUserWithEmailAndPassword(email, pwd)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log(user.email);
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email, pwd)
@@ -48,8 +35,19 @@ const Login = () => {
       });
   };
 
+  const goToRegister = () => {
+    setRegisterVisible(true); 
+  }
+
   return (
-    <KeyboardView behavior="padding">
+    registerVisible ? (
+      <RegisterUser 
+        email={email}
+        setEmail={setEmail}
+        pwd={pwd}
+        setPwd={setPwd} />
+    ) : (
+    <KeyboardView behavior="height">
       <StyledView>
         <StyledImage source={logo} />
         <StyledInput
@@ -69,23 +67,15 @@ const Login = () => {
           <StyledTextBtn>Login</StyledTextBtn>
         </StyledButton>
         <StyledButton 
-          onPress={handleSignup}
+          onPress={goToRegister}
           color={"#fff"}
           colorBorder={"#0782F9"}
           >
-          <StyledTextBtn color={"#0782F9"}>Sign Up</StyledTextBtn>
-          {/*{() => <RegisterUser 
-          name={name}
-          setName={setName}
-          lastname={lastname}
-          setLastname={setLastname}
-          email={email}
-          setEmail={setEmail}
-          pwd={pwd}
-          setPwd={setPwd}/>}*/}
+          <StyledTextBtn color={"#0782F9"}>Go to sign up</StyledTextBtn>
         </StyledButton>
       </StyledViewBtns>
     </KeyboardView>
+    )
   );
 };
 

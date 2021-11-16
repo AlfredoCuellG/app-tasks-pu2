@@ -1,112 +1,111 @@
-import React, {useState} from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import React, {useState, useEffect} from "react";
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import {KeyboardView, ViewInputs, StyledTextTitle, StyledInput, ViewButtons, 
+  StyledButton, StyledTextBtn, StyledText} from "./Register.styles"; 
+import { Alert, StatusBar } from "react-native";
+
+import { auth, db } from "../../firebase";
+import Login from "../LoginPage/Login.page";
 
 const RegisterUser = (props) => {  
-  const name = props.name; 
-  const setName = props.setName; 
-  const lastname = props.lastname; 
-  const setLastname = props.setLastname; 
+  const [name, setName] = useState(""); 
+  const [lastname, setLastname] = useState(""); 
   const email = props.email; 
   const setEmail = props.setEmail; 
   const pwd = props.pwd; 
   const setPwd = props.setPwd; 
+
+  const [loginVisible, setLoginVisible] = useState(false); 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsuscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.replace("Home");
+      }
+    });
+    return unsuscribe;
+  }, []);
+
+  const handleSignup = () => {
+    auth
+      .createUserWithEmailAndPassword(email, pwd)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
+  const returnToLogin = () => {
+    setLoginVisible(true); 
+  }
+
+  const addNewUser = async () => {
+    if(name == "" || lastname == "" || email == "" || pwd == ""){
+      Alert.alert("Algún campo está vacío"); 
+    }else{
+      try{
+        await db.collection("users").add({
+          nameUser: name,
+          lastnameUser: lastname,
+          emailUser: email,
+          pwdUser: pwd,
+        });
+        handleSignup(); 
+      }catch(error){
+        console.log(error);
+        Alert.alert(error.message); 
+      }
+    }
+  }
   
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View style={styles.inputContainer}>
-        <TextInput
+    loginVisible ? (
+      <Login />
+    ) : (
+    <KeyboardView behavior="height">
+      <ViewInputs>
+        <StyledTextTitle>Add new user</StyledTextTitle>
+        <StyledInput
           placeholder="Name"
           value={name}
           onChangeText={(text) => setName(text)}
-          style={styles.input}
         />
-        <TextInput
+        <StyledInput
           placeholder="LastName"
           value={lastname}
           onChangeText={(text) => setLastname(text)}
-          style={styles.input}
         />
-        <TextInput
+        <StyledInput
           placeholder="Email"
           value={email}
           onChangeText={(text) => setEmail(text)}
-          style={styles.input}
         />
-        <TextInput
+        <StyledInput
           placeholder="Password"
           value={pwd}
           onChangeText={(text) => setPwd(text)}
-          style={styles.input}
           secureTextEntry
         />
-      </View>
+      </ViewInputs>
       {/* We have 2 buttons that will execute the functions above) */}
       {/* Tenemos 2 botones que ejecutarán las funciones anteriores) */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, styles.buttonOutline]}>
-          <Text style={styles.buttonOutlineText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+      <ViewButtons>
+        <StyledButton onPress={addNewUser} >
+          <StyledTextBtn>Sign Up</StyledTextBtn>
+        </StyledButton>
+        <StyledButton onPress={returnToLogin} color={"#fff"}>
+          <StyledTextBtn color={"#07B3F9"}>Back to login</StyledTextBtn>
+        </StyledButton>
+      </ViewButtons>
+      <StatusBar />
+    </KeyboardView>
+    )
   );
 };
 
 export default RegisterUser;
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "#d6e0ff",
-    },
-    inputContainer: {
-      width: "80%",
-    },
-    input: {
-      backgroundColor: "#ffffff",
-      paddingHorizontal: 15,
-      paddingVertical: 10,
-      borderRadius: 10,
-      marginTop: 15,
-      borderWidth: 2, 
-      borderColor: "#b32a00", 
-    },
-    buttonContainer: {
-      width: "70%",
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 40,
-    },
-    button: {
-      backgroundColor: "#0782F9",
-      width: "100%",
-      padding: 15,
-      borderRadius: 10,
-      alignItems: "center",
-    },
-    buttonOutline: {
-      backgroundColor: "white",
-      marginTop: 5,
-      borderColor: "#0782F9",
-      borderWidth: 2,
-    },
-    buttonText: {
-      color: "white",
-      fontWeight: "700",
-      fontSize: 16,
-    },
-    buttonOutlineText: {
-      color: "#0782F9",
-      fontWeight: "700",
-      fontSize: 16,
-    },
-    logo: {
-      width: 190,
-      height: 205,
-      marginLeft: 65,
-      marginBottom: 5,
-    },
-  });
-  

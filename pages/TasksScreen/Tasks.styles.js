@@ -30,7 +30,7 @@ export const StyledInput = styled.TextInput`
 `;
 
 export const StyledBtnAdd = styled.TouchableOpacity`
-    background-color: ${({color}) => color ?? "#07B3F9"};
+    background-color: ${({color}) => color ?? "#0782F9"};
     width: 80%;
     padding: 10px;
     border-radius: 10px;
