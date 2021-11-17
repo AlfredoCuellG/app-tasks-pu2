@@ -41,20 +41,32 @@ export const StyledButton = styled.TouchableOpacity`
     margin-top: 14px;
 `;
 
+export const StyledButtonSignUp = styled.TouchableOpacity`
+    background-color: ${({color}) => color ?? "#ffffff"};
+    width: 50%;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid #0782F9;
+    align-items: center;
+    margin-top: 14px;
+`;
+
 export const StyledTextBtn = styled.Text`
     color: ${({color}) => color ?? "#fff"};
     font-weight: 700;
     font-size: 16px;
 `;
 
-export const StyledViewRegistrer = styled.View`
+/*export const StyledViewRegistrer = styled.View`
     width: 70%;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-`;
+`;*/
 
 export const StyledText = styled.Text`
-    color: ${({color}) => color ?? "#000000"};
-    font-size: 20px;
+    color: ${({color}) => color ?? "#ffffff"};
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
 `;

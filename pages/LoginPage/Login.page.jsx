@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
 import {KeyboardView, StyledView, StyledImage, StyledInput, 
-  StyledViewBtns, StyledButton, StyledTextBtn} from './Login.styles'; 
+  StyledViewBtns, StyledButton, StyledButtonSignUp, StyledTextBtn, StyledText} from './Login.styles'; 
 
 import { auth } from "../../firebase";
 import logo from '../../media/images/logo.png'; 
@@ -66,13 +66,11 @@ const Login = () => {
         <StyledButton onPress={handleLogin}>
           <StyledTextBtn>Login</StyledTextBtn>
         </StyledButton>
-        <StyledButton 
-          onPress={goToRegister}
-          color={"#fff"}
-          colorBorder={"#0782F9"}
-          >
+        <StyledText>If you don't have an account, register here:</StyledText>
+        <StyledButtonSignUp 
+          onPress={goToRegister}>
           <StyledTextBtn color={"#0782F9"}>Go to sign up</StyledTextBtn>
-        </StyledButton>
+        </StyledButtonSignUp>
       </StyledViewBtns>
     </KeyboardView>
     )

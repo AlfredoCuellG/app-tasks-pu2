@@ -76,6 +76,14 @@ export const TextTask = styled.Text`
     margin-right: 5px;
 `;
 
+export const TextTaskTachado = styled.Text`
+    color: ${({color}) => color ?? "#ABABAB"};
+    font-size: 20px;
+    margin-bottom: 50px;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-decoration: line-through;
+`;
 
 export const ViewTaskBtns = styled.View`
     position: absolute;
@@ -119,5 +127,12 @@ export const ButtonsTaskDelete = styled.TouchableOpacity`
 export const TextBtnTasks = styled.Text`
     color: ${({color}) => color ?? "#000000"};
     font-size: 14px;
+    text-align: center;
+`;
+
+export const MessageScroll = styled.Text`
+    color: ${({color}) => color ?? "#000"};
+    font-weight: bold;
+    font-size: 16px;
     text-align: center;
 `;

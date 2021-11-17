@@ -6,6 +6,7 @@ import {KeyboardView, ViewInputs, StyledTextTitle, StyledInput, ViewButtons,
 import { Alert, StatusBar } from "react-native";
 
 import { auth, db } from "../../firebase";
+import { getDatabase, ref, onValue } from 'firebase/database';
 import Login from "../LoginPage/Login.page";
 
 const RegisterUser = (props) => {  
@@ -15,6 +16,8 @@ const RegisterUser = (props) => {
   const setEmail = props.setEmail; 
   const pwd = props.pwd; 
   const setPwd = props.setPwd; 
+
+  const idUser = auth.uid; 
 
   const [loginVisible, setLoginVisible] = useState(false); 
   const navigation = useNavigation();
@@ -44,23 +47,55 @@ const RegisterUser = (props) => {
     setLoginVisible(true); 
   }
 
-  const addNewUser = async () => {
+  const crearItem = () => {
+    try {
+      if (textTask.length > 0) {
+        const todoRef = db.ref("users/"+auth.currentUser?.uid+"/tasks");
+        item.Titulo = textTask;
+        todoRef.push(item);
+        console.log(item);
+        listarItems();
+        setTextTask(null);
+      } else {
+        alert("Ingresar un título");
+      }
+    } catch (error) {
+      alert("Ingresar un título");
+    }
+  };
+
+  function addNewUser() {
+    const reference = db.ref("/data/users");
     if(name == "" || lastname == "" || email == "" || pwd == ""){
-      Alert.alert("Algún campo está vacío"); 
+      Alert.alert(
+        "Warning.",
+        "Some form field is empty.",
+        [
+          { text:"Ok", onPress:()=>console.log("Ok press")}
+        ]
+        ); 
     }else{
+      handleSignup();
       try{
-        await db.collection("users").add({
+        reference.push({
           nameUser: name,
           lastnameUser: lastname,
           emailUser: email,
           pwdUser: pwd,
         });
-        handleSignup(); 
       }catch(error){
         console.log(error);
         Alert.alert(error.message); 
       }
     }
+  }
+
+  const comprobacion = () => {
+    console.log("Nom: "+name+" Ape: "+lastname+" Email: "+email+" Pwd: "+pwd); 
+    setName((current) => current = ""); 
+    setLastname((current) => current = ""); 
+    setEmail((current) => current = ""); 
+    setPwd((current) => current = ""); 
   }
   
   return (
